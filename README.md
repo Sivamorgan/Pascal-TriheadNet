@@ -1,4 +1,4 @@
-# Pascal-TriheadNet
+# Pascal_TriheadNet
 
 **Single-stage unified perception model for Pascal VOC: Detection, Semantic, and Instance Segmentation in one forward pass.**
 
@@ -11,6 +11,18 @@ A unified codebase for joint Object Detection (FCOS), Semantic Segmentation (Pan
 ## 📁 Dataset Structure
 The code expects the standard Pascal VOC directory structure. 
 
+## 🎨 Visual Results
+
+Below are examples of the model's unified output (Detection + Semantic + Instance):
+
+![Model Predictions Detection](outputs/Image_outputs/vis_2007_000042_det.png)
+![Semantic Segmentation](outputs/Image_outputs/vis_2007_000042_sem.png)
+![Instance Segmentation](outputs/Image_outputs/vis_2007_000042_inst.png)
+
+**Video Demos:**
+- 🎥 [Bottle_Detection](outputs/Video_demos/vis_bottle-detection.mp4)
+
+
 ```
 VOC2012/
 ├── JPEGImages/        # .jpg images
@@ -22,8 +34,22 @@ VOC2012/
     └── Segmentation/  # train.txt, val.txt for segmentation
 ```
 
-**Note**: For training, we use `trainval.txt` and perform a hash-based 80/20 split to maximize data usage while maintaining a consistent validation set.
+**Note**: For training, `trainval.txt` is utilized with a hash-based 80/20 split to maximize data usage while maintaining a consistent validation set.
 
+
+## 📥 Model Checkpoints
+
+Provided are pretrained models hosted on **Hugging Face**. You can download them to run inference directly.
+
+🔗 **[Download Models from Hugging Face 🤗](https://huggingface.co/Sivamorgan/pascal-triheadnet/tree/main)**
+
+| Model | Description | Size |
+| :--- | :--- | :--- |
+| **`checkpoint_epoch_50.pth`** | Best performing FP32 model (Epoch 50).|826MB
+| **`checkpoint_epoch_50_quantized.pth`** | INT8 Quantized model (Linear & Conv2d).|136MB
+
+> [!CAUTION]
+> **Quantized Models**: If you are using the quantized checkpoint, ensure you are loading it correctly. The scripts (`infer_single.py`, `evaluate.py`) automatically detect "quantized" in the filename and apply the necessary dynamic quantization structure **before** loading weights. If you rename the file, automatic detection might fail.
 
 ## 🛠 Installation
 
@@ -37,14 +63,15 @@ pip install -r requirements.txt
 Train all three tasks simultaneously.
 
 ```bash
-# Using Hydra configuration
-python scripts/train_joint.py \
-    data.root="/path/to/VOC2012" \
-    data.batch_size=16 \
-    loss.det_weight=1.0 \
-    loss.sem_weight=1.0 \
-    loss.inst_weight=1.0
+# Using Hydra for flexible configuration
+!python scripts/train_joint.py \
+    data.batch_size=32 \
+    training.num_epochs=50 \
+    wandb.enabled=true \
+    data.root="/path/to/VOC2012"
 ```
+
+> **Note**: This model was trained on an **L4 GPU** in Google Colab for approximately **4 hours**. The last 6 layers of the backbone were unfrozen and fine-tuned with the weights specified in `configs/joint_training.yaml`.
 
 ### 2. Evaluation
 Evaluate on the validation set. Support per-class metrics.
@@ -109,4 +136,4 @@ det_seg/
 ```
 
 ## 🙌 Acknowledgements
-Developed with the assistance of Google Antigravity, an agentic AI coding assistant, with specific contributions to the visualization and analysis modules
+This project was developed with the assistance of **Google Antigravity**, an agentic AI coding assistant.

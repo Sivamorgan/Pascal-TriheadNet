@@ -104,7 +104,7 @@ def main(cfg):
             
             # Detection
             det_out = model.det_head(pyramid)
-            det_results = postprocess_detection(det_out, score_thresh=0.05, nms_thresh=0.5)
+            det_results = postprocess_detection(det_out, score_thresh=0.25, nms_thresh=0.05)
             
             # Semantic segmentation
             sem_out = model.sem_head(pyramid)

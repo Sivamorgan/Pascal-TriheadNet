@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# PyTorch
+*.pth
+*.pt
+*.ckpt
+
+# Hydra
+outputs/
+.hydra/
+
+# VS Code
+.vscode/
+
+# Project Specific
+checkpoints/
+
+# Generated Media / Outputs
+*.mp4
+*.png
+*.jpg
+
+# Exceptions
+!outputs/
+outputs/*
+!outputs/Video_demos/
+!outputs/Image_outputs/
+!outputs/Video_demos/*.mp4
+!outputs/Image_outputs/*.png
+!assets/*.png
+
+

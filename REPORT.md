@@ -1,4 +1,4 @@
-# Pascal-TriheadNet: Joint Detection & Segmentation
+# Pascal_TriheadNet: Joint Detection & Segmentation
 
 ## 1. Architecture Overview
 
@@ -8,12 +8,12 @@
  3.  **Instance Segmentation** (Pixel-wise Masks per Object)
 
 ### Backbone: Vision Transformer (ViT)
--   **Encoder**: We use a `vit_base_patch16_224` pretrained on ImageNet.
+-   **Encoder**: A `vit_base_patch16_224` pretrained on ImageNet is used.
 -   **Input**: 224x224 RGB images.
 -   **Output Features**: The ViT produces a single-scale feature map (1/16 resolution) from the final transformer block. The Neck is responsible for generating the multi-scale pyramid from this single input.
 
 ### Neck: Simple Feature Pyramid (ViTDet Style)
--   **Architecture**: Unlike a traditional FPN that uses top-down pathways, we use a **Simple Feature Pyramid** tailored for plain Vision Transformers.
+-   **Architecture**: Unlike a traditional FPN that uses top-down pathways, a **Simple Feature Pyramid** tailored for plain Vision Transformers is employed.
 -   **Mechanism**: The single-scale output from the ViT (at 1/16 resolution) is upsampled or strided in parallel to create the pyramid.
 -   **Parallel Scales**:
     -   `P2` (1/4 resolution): 4x Bilinear Upsample + Conv
@@ -68,11 +68,11 @@ $$ L_{total} = \lambda_{det} L_{det} + \lambda_{sem} L_{sem} + \lambda_{inst} L_
 
 
 ### Data Augmentation
-We utilize **`torchvision.transforms.v2`** to build a robust augmentation pipeline. This modern API automatically ensures geometric consistency across all inputs (Image, Bounding Boxes, and Segmentation Masks) simultaneously. Please refer to `data/Dataset.py` for the implementation details.
+**`torchvision.transforms.v2`** is utilized to build a robust augmentation pipeline. This modern API automatically ensures geometric consistency across all inputs (Image, Bounding Boxes, and Segmentation Masks) simultaneously. Please refer to `data/Dataset.py` for the implementation details.
 
 ## 3. Performance Metrics
 
-To ensure robust evaluation, we track:
+To ensure robust evaluation, the following are tracked:
 
 -   **mAP (Mean Average Precision)**: Standard VOC metric (averaged over IoU 0.5:0.95).
 -   **mAP @ 0.5 / 0.75**: Precision at strict IoU thresholds.
@@ -83,7 +83,7 @@ To ensure robust evaluation, we track:
 
 
 
--   **Fine-tuning**: We **unfreeze the last 6 transformer blocks** of the backbone to adapt the features to the Pascal VOC domain while keeping early layers frozen.
+-   **Fine-tuning**: The **last 6 transformer blocks** of the backbone are unfrozen to adapt the features to the Pascal VOC domain while keeping early layers frozen.
 
 
 
@@ -130,12 +130,13 @@ To ensure robust evaluation, we track:
 
 
 ### Ablation Study: Fine-Tuning Depth
-We compared the performance when unfreezing the last **4 layers** vs. **6 layers** of the ViT backbone. As shown below, unfreezing more layers (6) allows the model to better adapt to the specific geometry and semantics of Pascal VOC.
+Performance was compared when unfreezing the last **4 layers** vs. **6 layers** of the ViT backbone. As shown below, unfreezing more layers (6) allows the model to better adapt to the specific geometry and semantics of Pascal VOC.
 
 | Detection | Semantic | Instance |
 | :---: | :---: | :---: |
-| ![Det Comparison](assets/comparison_det.png) | ![Sem Comparison](assets/comparison_sem.png) | ![Inst Comparison](assets/comparison_inst.png) |
-*Figure: Performance comparison between unfreezing 4 vs 6 layers.*
+| ![Det Comparison](assets/comparison_det.png) <br> *Figure: Detection* | ![Sem Comparison](assets/comparison_sem.png) <br> *Figure: Semantic* | ![Inst Comparison](assets/comparison_inst.png) <br> *Figure: Instance* |
+
+<p align="center"><em>Figure: Performance comparison between unfreezing 4 vs 6 layers.</em></p>
 
 > **Note**: Results for the **frozen backbone** baseline (0 layers unfrozen) are not reported here, as the detection metrics were significantly lower and instance segmentation metrics were not logged during those runs.
 

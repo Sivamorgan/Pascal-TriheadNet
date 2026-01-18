@@ -6,7 +6,7 @@ from torchvision.ops import batched_nms
 def postprocess_detection(
     preds,
     strides = [4, 8, 16, 32],
-    score_thresh: float = 0.05,
+    score_thresh: float = 0.2,
     nms_thresh: float = 0.5,
     max_detections: int = 100
 ):
