@@ -1,0 +1,45 @@
+# Default Configuration
+data:
+  root: "/content/drive/MyDrive/Pascal_data"
+  batch_size: 4
+  num_workers: 4
+  image_size: 224
+  limit: null  # Set to integer for debugging
+  segmented_ratio: 0.2   # % of samples of segmentation in a batch 
+  use_trainval_split: true 
+
+model:
+  backbone: "vit_base_patch16_224"
+  pretrained: true
+  freeze_backbone: true
+  unfreeze_n_layers: 4  # Number of last transformer blocks to unfreeze (0 = all frozen, 12 = all unfrozen for ViT-B)
+  neck_channels: 256
+
+training:
+  num_epochs: 50
+  base_lr: 2.0e-4
+  backbone_lr_mult: 0.01
+  weight_decay: 0.01
+  warmup_epochs: 5
+  save_freq: 1
+  val_freq: 1
+  resume: "./checkpoints/joint_training/best.pth" # Path to checkpoint
+  checkpoint_dir: "./checkpoints/joint_training"
+  checkpoint_metric: "val_total"  # Which metric to track for best checkpoint
+  checkpoint_minimize: true       # true for losses (lower=better), false for metrics (higher=better)
+  checkpoint_k: 2                 # Number of top checkpoints to keep
+  device: "cuda"
+  seed: 42
+  deterministic: False
+  use_amp: True # When 
+
+loss:
+  det_weight: 1.0
+  sem_weight: 0.8
+  inst_weight: 1.0
+  boundary_weight: 2.0  # Extra weight for boundary pixels in semantic segmentation
+
+wandb:
+  enabled: false
+  project: "Pascal_VOC_Joint_Training"
+  name: "det_seg_joint_ft"
