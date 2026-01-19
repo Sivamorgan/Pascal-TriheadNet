@@ -11,18 +11,6 @@ A unified codebase for joint Object Detection (FCOS), Semantic Segmentation (Pan
 ## 📁 Dataset Structure
 The code expects the standard Pascal VOC directory structure. 
 
-## 🎨 Visual Results
-
-Below are examples of the model's unified output (Detection + Semantic + Instance):
-
-![Model Predictions Detection](outputs/Image_outputs/vis_2007_000042_det.png)
-![Semantic Segmentation](outputs/Image_outputs/vis_2007_000042_sem.png)
-![Instance Segmentation](outputs/Image_outputs/vis_2007_000042_inst.png)
-
-**Video Demos:**
-- 🎥 [Bottle_Detection](outputs/Video_demos/vis_bottle-detection.mp4)
-
-
 ```
 VOC2012/
 ├── JPEGImages/        # .jpg images
@@ -35,6 +23,19 @@ VOC2012/
 ```
 
 **Note**: For training, `trainval.txt` is utilized with a hash-based 80/20 split to maximize data usage while maintaining a consistent validation set.
+
+## 🎨 Visual Results
+
+Below are examples of the model's unified output (Detection + Semantic + Instance):
+
+![Model Predictions Detection](outputs/Image_outputs/vis_2007_000042_det.png)
+![Semantic Segmentation](outputs/Image_outputs/vis_2007_000042_sem.png)
+![Instance Segmentation](outputs/Image_outputs/vis_2007_000042_inst.png)
+
+**Video Demos:**
+- 🎥 [Bottle_Detection](outputs/Video_demos/vis_bottle-detection.mp4)
+
+
 
 
 ## 📥 Model Checkpoints
