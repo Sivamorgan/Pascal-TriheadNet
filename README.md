@@ -65,7 +65,7 @@ Train all three tasks simultaneously.
 
 ```bash
 # Using Hydra for flexible configuration
-!python scripts/train_joint.py \
+python scripts/train_joint.py \
     data.batch_size=32 \
     training.num_epochs=50 \
     wandb.enabled=true \
@@ -121,8 +121,8 @@ det_seg/
 │   └── Dataset.py       # PascalUnifiedDataset
 ├── losses/              # Loss functions (Joint, Detection, Segmentation)
 ├── models/              # Network architecture
-│   ├── backbone.py      # ViT Backbones
-│   ├── neck.py          # Feature Pyramid Network (FPN)
+│   ├── backbone.py      # ViT Backbone
+│   ├── neck.py          # ViTDet
 │   ├── head.py          # Detection, Semantic, Instance Heads
 │   └── architectures.py # JointModel wrapper
 ├── scripts/             # Entry points
